@@ -1,0 +1,20 @@
+* Users API
+
+A simple API for managing users.
+
+* Running Users API
+
+Running the service is trivially easy as follows, assuming you're in
+the top-level directory of this repo:
+
+#+BEGIN_SRC
+python -m users
+#+END_SRC
+
+This runs in development mode, with automatic reloading, on port 5000.
+
+* Development Log and Notes
+
+- <2020-02-08 Sat 13:05> Initial setup. Learning a lot about Flask,
+  this is fun. Basic app running with a trivial healthcheck and
+  simple 404 handler

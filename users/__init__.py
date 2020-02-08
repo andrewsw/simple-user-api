@@ -1,9 +1,12 @@
 from flask import Flask, make_response
 
 
-def create_app():
+def create_app(config=None):
 
     app = Flask(__name__)
+
+    if config is not None:
+        app.config.from_mapping(config)
 
     # simple health check
     @app.route('/ping', methods=['GET'])

@@ -2,6 +2,18 @@
 
 A simple API for managing users.
 
+* Requirements
+
+Create a microservice with the following:
+
+- A User rest Resource that allows clients to create, read, update, delete a user or a list of users.
+- You can use a database of your choice but it's also fine to just use a map or dictionary in memory to keep track of users by their ids.
+- Use structured logging.
+- Add Metrics (e.g. statsd, dropwizard, prometheus, to time routes)
+- Write unit tests for the service.
+- Generate a code coverage report.
+- The user JSON can just be id, first name, last name, zip code, and email address.
+
 * Running Users API
 
 Running the service is trivially easy as follows, assuming you're in
@@ -13,8 +25,18 @@ python -m users
 
 This runs in development mode, with automatic reloading, on port 5000.
 
+* Coverage
+
+Coverage reporting is generated automatically with output to both the
+terminal and as an html report in [[./coverage_html/index.html][coverage_html/]]
+
+Configuration lives in [[./setup.cfg][setup.cfg]].
+
 * Development Log and Notes
 
 - <2020-02-08 Sat 13:05> Initial setup. Learning a lot about Flask,
   this is fun. Basic app running with a trivial healthcheck and
   simple 404 handler
+
+- <2020-02-08 Sat 14:45> learning so much... Have coverage reporting
+  in place and working to my satisfaction.

@@ -13,3 +13,7 @@ def test_default_404_handler(client):
     response = client.get('/not_ping')
     assert response.status_code == 404
     assert response.get_json()['error'] == 'Not Found'
+
+
+def test_app_user_blueprint_registered(app):
+    assert 'User' in app.blueprints

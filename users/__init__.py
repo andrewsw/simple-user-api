@@ -8,6 +8,10 @@ def create_app(config=None):
     if config is not None:
         app.config.from_mapping(config)
 
+    # blueprints
+    from . import user
+    app.register_blueprint(user.blueprint)
+
     # simple health check
     @app.route('/ping', methods=['GET'])
     def ping():

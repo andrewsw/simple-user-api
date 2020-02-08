@@ -1,4 +1,4 @@
 *~
 *pyc
-/.coverage
-/coverage_html
+.coverage
+coverage_html

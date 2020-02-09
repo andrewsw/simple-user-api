@@ -19,7 +19,9 @@ logger = structlog.get_logger()
 
 @blueprint.route('', methods=['POST'])
 def create_user():
+    logger.debug('create_user', data=request.data, form=request.form)
     user_data = request.get_json(force=True)  # TODO: enforce application/json
+    logger.debug('create_user', user_data=user_data)
     persisted_user = user_db.new_user(user_data)
 
     logger.debug('create_user', record=persisted_user)
@@ -36,3 +38,20 @@ def get_user(id):
 
     logger.debug('get_user', record=user)
     return make_response(user)
+
+
+@blueprint.route('/<id>', methods=['PUT'])
+def update_user(id):
+    logger.debug('update_user', data=request.data, form=request.form)
+    user_data = request.get_json(force=True)
+
+    try:
+        updated_user = user_db.update_user(id, user_data)
+        if updated_user is None:
+            abort(404)
+
+        logger.debug('update_user', updated_user=updated_user)
+        return make_response(user_data)
+    except user_db.UserIdMismatchException as e:
+        logger.warn('update_user', error=e)
+        abort(400, e)

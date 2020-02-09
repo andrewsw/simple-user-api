@@ -45,3 +45,34 @@ def get_user_by_id(user_id):
 
     """
     return db.get(user_id, None)
+
+
+def update_user(user_id, user_data):
+    """updates a pre-existing user record
+
+    Arguments:
+    user_id: the id of the user to update
+    user_data: the updated user data
+
+    Returns:
+    the updated user, or None if the user is not found
+
+    Raises:
+    UserIdMismatchException: when the ids don't match...
+    """
+
+    if user_id != user_data['id']:
+        raise UserIdMismatchException('provided user_id does not match that in provided record')
+
+    orig_user = db.get(user_id, None)
+
+    if orig_user is None:
+        return None
+
+    db[user_id] = user_data
+
+    return user_data
+
+
+class UserIdMismatchException(Exception):
+    pass

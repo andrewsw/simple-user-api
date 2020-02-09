@@ -60,3 +60,8 @@ ln -s ../../bin/pre-commit-hook.sh .git/hooks/pre-commit
 - <2020-02-09 Sun 09:50> start building up logging
   configuration. structlog has too many features for my experience
   level with python loggers...
+
+- <2020-02-09 Sun 12:51> feeling like my lack of python knowledge is
+  getting in the way of some of the configuration-ey bits. But tests
+  pass, app functions when run from the command line. Time to move on
+  to proper implementation of the APIs.

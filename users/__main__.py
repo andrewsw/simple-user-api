@@ -3,7 +3,10 @@ import sys
 import structlog
 
 from users import create_app
+
 from werkzeug.serving import run_simple
+from prometheus_client import make_wsgi_app
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
 
 def main():
@@ -25,10 +28,16 @@ def main():
         logger_factory=structlog.stdlib.LoggerFactory()
     )
 
+    app = create_app()
+
+    # allows us to view metrics on /metrics
+    dispatcher = DispatcherMiddleware(app.wsgi_app,
+                                      {'/metrics': make_wsgi_app()})
+
     run_simple(
         'localhost',
         5000,
-        create_app(),
+        dispatcher,
         use_reloader=True,
     )
 

@@ -1,5 +1,6 @@
 from flask import Flask, make_response, request
 from flask_request_id import RequestID
+from flask_prometheus_metrics import register_metrics
 
 from datetime import datetime
 
@@ -20,6 +21,10 @@ def create_app(config=None):
     # blueprints
     from . import user
     app.register_blueprint(user.blueprint)
+
+    # metrics
+    # TODO: proper config
+    register_metrics(app, app_version='0.0.1', app_config='development')
 
     @app.before_request
     def request_id_logger():

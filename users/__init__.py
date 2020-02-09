@@ -1,3 +1,5 @@
+from .error_handlers import register_error_handlers
+
 from flask import Flask, make_response, request
 from flask_request_id import RequestID
 from flask_prometheus_metrics import register_metrics
@@ -31,6 +33,7 @@ def create_app(config=None):
         log = logger.new(request_id=request.environ.get('FLASK_REQUEST_ID'))
         log.debug(
             'START',
+            method=request.method,
             path=request.full_path,
             time=datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%fZ')
         )
@@ -41,14 +44,6 @@ def create_app(config=None):
         # TODO: implement actual health checks here
         return make_response({'status': 'healthy'})
 
-    @app.errorhandler(404)
-    def not_found(error):
-        """
-        not_found
-
-        Default error handling for not found resources
-        """
-        logger.warn(error)
-        return make_response({'error': 'Not Found'}, 404)
+    register_error_handlers(app)
 
     return app

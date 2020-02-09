@@ -75,3 +75,8 @@ ln -s ../../bin/pre-commit-hook.sh .git/hooks/pre-commit
   getting decent isolation, separation of concerns, etc, without a
   real need for a class structure. That said, if this gets much
   bigger, that will change as I bump up against duplication.
+
+- <2020-02-09 Sun 15:54> this is fun. With some renaming, a bit of
+  cleanup, and proper teardown of the user database between tests,
+  implementing listing of users becomes straightforward. I believe
+  this is functionally complete for our requirements. On to validations.

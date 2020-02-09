@@ -28,16 +28,13 @@ def create_user():
     return make_response(persisted_user)
 
 
+@blueprint.route('/', methods=['GET'], defaults={'id': None})
 @blueprint.route('/<id>', methods=['GET'])
 def get_user(id):
-    logger.debug('get_user', user_id=id)
+    if id is None:
+        return _list_users()
 
-    user = user_db.get_user_by_id(id)
-    if user is None:
-        abort(404)
-
-    logger.debug('get_user', record=user)
-    return make_response(user)
+    return _get_user(id)
 
 
 @blueprint.route('/<id>', methods=['PUT'])
@@ -67,3 +64,20 @@ def delete_user(id):
         abort(404)
 
     return make_response(deleted_user)
+
+
+def _get_user(id):
+    logger.debug('get_user', user_id=id)
+
+    user = user_db.get_user_by_id(id)
+    if user is None:
+        abort(404)
+
+    logger.debug('get_user', record=user)
+    return make_response(user)
+
+
+def _list_users():
+    users = user_db.list_users()
+    logger.debug('list_users', user_count=len(users))
+    return make_response({'users': users})

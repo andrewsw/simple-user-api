@@ -74,3 +74,30 @@ def test_delete_user():
 
 def test_delete_user_not_found():
     assert user_db.delete_user(uuid.uuid4()) is None
+
+
+def test_list_users():
+    user1 = user_db.new_user(user_fixture)
+
+    another_user = {
+        'given_name': 'Joe',
+        'surname': 'Johnson',
+        'zip': '12345',
+        'email': 'joe@johson.org'
+    }
+    user2 = user_db.new_user(another_user)
+
+    users = user_db.list_users()
+
+    assert isinstance(users, list)
+    assert user1 in users
+    assert user2 in users
+
+
+def test_clear():
+    user_db.new_user(user_fixture)
+    assert user_db.list_users() != []
+
+    user_db.clear()
+
+    assert user_db.list_users() == []

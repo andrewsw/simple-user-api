@@ -86,5 +86,18 @@ def delete_user(user_id):
     return db.pop(user_id, None)
 
 
+def list_users():
+    """returns a list of all users
+
+    TODO: pagination?
+    """
+    return list(db.values())
+
+
+def clear():
+    """clears the user database, used for test cleanup"""
+    db.clear()
+
+
 class UserIdMismatchException(Exception):
     pass

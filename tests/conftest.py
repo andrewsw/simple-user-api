@@ -1,4 +1,4 @@
-from users import create_app
+from users import create_app, user_db
 
 from prometheus_client import make_wsgi_app
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
@@ -14,9 +14,12 @@ def app():
     # test_client() to work as expected
     app.wsgi_app = DispatcherMiddleware(app.wsgi_app,
                                         {'/metrics': make_wsgi_app()})
-    return app
+    yield app
+
+    # teardown
+    user_db.clear()
 
 
 @pytest.fixture
 def client(app):
-    return app.test_client()
+    yield app.test_client()

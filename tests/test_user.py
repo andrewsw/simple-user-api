@@ -98,6 +98,26 @@ def test_delete_user_not_found(client):
     assert response.status_code == 404
 
 
+def test_list_users(client):
+    first_user = create_user(client).get_json()
+    another_user = json.dumps({
+        'given_name': 'Joe',
+        'surname': 'Johnson',
+        'zip': '12345',
+        'email': 'joe@johnson.org'
+    })
+    second_user = client.post(PATH_PREFIX, data=another_user).get_json()
+
+    response = client.get(PATH_PREFIX)  # bare get should list users
+    assert response.status_code == 200
+
+    response_json = response.get_json()
+    users = response_json['users']
+    assert len(users) == 2
+    assert first_user in users
+    assert second_user in users
+
+
 def create_user(client):
     return client.post(PATH_PREFIX, data=user)
 

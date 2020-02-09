@@ -15,7 +15,7 @@ def test_default_404_handler(client):
 
 
 def test_app_user_blueprint_registered(app):
-    assert 'User' in app.blueprints
+    assert 'Users' in app.blueprints
 
 
 def test_request_id(client):

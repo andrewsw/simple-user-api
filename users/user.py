@@ -12,12 +12,12 @@ from . import user_db
 
 import structlog
 
-blueprint = Blueprint('User', __name__, url_prefix='/user')
+blueprint = Blueprint('Users', __name__, url_prefix='/users')
 
 logger = structlog.get_logger()
 
 
-@blueprint.route('', methods=['POST'])
+@blueprint.route('/', methods=['POST'])
 def create_user():
     logger.debug('create_user', data=request.data, form=request.form)
     user_data = request.get_json(force=True)  # TODO: enforce application/json

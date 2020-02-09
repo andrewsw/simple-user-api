@@ -1,6 +1,8 @@
 import uuid
 import json
 
+PATH_PREFIX = '/users/'
+
 user = json.dumps({
     'given_name': 'Bob',
     'surname': 'Roberts',
@@ -22,7 +24,7 @@ def test_user_create_sets_id(client):
 def test_user_persistence(client):
     created_user = create_user(client).get_json()
     user_id = created_user.get('id')
-    get_response = client.get(f'/user/{user_id}')
+    get_response = client.get(PATH_PREFIX + user_id)
 
     assert get_response.status_code == 200
 
@@ -32,7 +34,7 @@ def test_user_persistence(client):
 
 def test_get_user_not_found(client):
     user_id = gen_user_id()
-    response = client.get(f'/user/{user_id}')
+    response = client.get(PATH_PREFIX + user_id)
     assert response.status_code == 404
 
 
@@ -40,7 +42,7 @@ def test_update_user(client):
     user = create_user(client).get_json()
     user['email'] = 'robert@bob.com'
 
-    response = client.put(f'/user/{user["id"]}', json=user)
+    response = client.put(PATH_PREFIX + user["id"], json=user)
     assert response.status_code == 200
     updated_user = response.get_json()
     assert updated_user == user
@@ -51,10 +53,10 @@ def test_update_user_persistence(client):
     user['email'] = 'robert@bob.com'
     user_id = user['id']
 
-    response = client.put(f'/user/{user_id}', json=user)
+    response = client.put(PATH_PREFIX + user_id, json=user)
     assert response.status_code == 200
 
-    persisted_user = client.get(f'/user/{user_id}').get_json()
+    persisted_user = client.get(PATH_PREFIX + user_id).get_json()
     assert persisted_user == user
 
 
@@ -64,7 +66,7 @@ def test_update_user_not_found(client):
     user['id'] = gen_user_id()
     user_id = user['id']
 
-    response = client.put(f'/user/{user_id}', json=user)
+    response = client.put(PATH_PREFIX + user_id, json=user)
     assert response.status_code == 404
 
 
@@ -72,7 +74,7 @@ def test_update_user_mismatched_id(client):
     user = create_user(client).get_json()
     bad_user_id = gen_user_id()
 
-    response = client.put(f'/user/{bad_user_id}', json=user)
+    response = client.put(PATH_PREFIX + bad_user_id, json=user)
     assert response.status_code == 400
     assert 'user_id does not match' in response.json['error_message']
 
@@ -81,23 +83,23 @@ def test_delete_user(client):
     user = create_user(client).get_json()
     user_id = user["id"]
 
-    response = client.delete(f'/user/{user_id}')
+    response = client.delete(PATH_PREFIX + user_id)
     assert response.status_code == 200
 
     deleted_user = response.get_json()
     assert deleted_user == user
 
-    post_delete_response = client.get(f'/user/{user_id}')
+    post_delete_response = client.get(PATH_PREFIX + user_id)
     assert post_delete_response.status_code == 404
 
 
 def test_delete_user_not_found(client):
-    response = client.delete(f'/user/{gen_user_id()}')
+    response = client.delete(PATH_PREFIX + gen_user_id())
     assert response.status_code == 404
 
 
 def create_user(client):
-    return client.post('/user', data=user)
+    return client.post(PATH_PREFIX, data=user)
 
 
 def gen_user_id():

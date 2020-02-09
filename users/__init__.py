@@ -1,9 +1,18 @@
-from flask import Flask, make_response
+from flask import Flask, make_response, request
+from flask_request_id import RequestID
+
+from datetime import datetime
+
+import structlog
+
+logger = structlog.get_logger()
 
 
 def create_app(config=None):
 
     app = Flask(__name__)
+
+    RequestID(app)
 
     if config is not None:
         app.config.from_mapping(config)
@@ -12,11 +21,19 @@ def create_app(config=None):
     from . import user
     app.register_blueprint(user.blueprint)
 
+    @app.before_request
+    def request_id_logger():
+        log = logger.new(request_id=request.environ.get('FLASK_REQUEST_ID'))
+        log.debug(
+            'START',
+            path=request.full_path,
+            time=datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+        )
+
     # simple health check
     @app.route('/ping', methods=['GET'])
     def ping():
         # TODO: implement actual health checks here
-        print("/ping")  # dumb logging
         return make_response({'status': 'healthy'})
 
     @app.errorhandler(404)
@@ -26,7 +43,7 @@ def create_app(config=None):
 
         Default error handling for not found resources
         """
-        print(error)  # dumb logging
+        logger.warn(error)
         return make_response({'error': 'Not Found'}, 404)
 
     return app

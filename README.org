@@ -56,3 +56,7 @@ ln -s ../../bin/pre-commit-hook.sh .git/hooks/pre-commit
 
 - <2020-02-08 Sat 16:40> TDD w/ python! Implementation of simple
   persistence with in-memory dict, can create and read users
+
+- <2020-02-09 Sun 09:50> start building up logging
+  configuration. structlog has too many features for my experience
+  level with python loggers...

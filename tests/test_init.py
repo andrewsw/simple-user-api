@@ -4,7 +4,6 @@
 
 def test_ping(client):
     response = client.get('/ping')
-    print(response)
     assert response.status_code == 200
     assert response.get_json()['status'] == 'healthy'
 
@@ -17,3 +16,8 @@ def test_default_404_handler(client):
 
 def test_app_user_blueprint_registered(app):
     assert 'User' in app.blueprints
+
+
+def test_request_id(client):
+    response = client.get('/ping')
+    assert 'X-Request-ID' in response.headers

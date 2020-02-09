@@ -27,6 +27,8 @@ This runs in development mode, with automatic reloading, on port 5000.
 
 * Coverage
 
+[[file:coverage.svg]]
+
 Coverage reporting is generated automatically with output to both the
 terminal and as an html report in [[./coverage_html/index.html][coverage_html/]]
 

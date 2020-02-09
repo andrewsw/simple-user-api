@@ -62,3 +62,15 @@ def test_update_user_mismatched_id():
     user = user_db.new_user(user_fixture)
     with pytest.raises(user_db.UserIdMismatchException):
         user_db.update_user(str(uuid.uuid4()), user)
+
+
+def test_delete_user():
+    user = user_db.new_user(user_fixture)
+    deleted_user = user_db.delete_user(user['id'])
+    assert deleted_user == user
+
+    assert user_db.get_user_by_id(user['id']) is None
+
+
+def test_delete_user_not_found():
+    assert user_db.delete_user(uuid.uuid4()) is None

@@ -77,9 +77,28 @@ def test_update_user_mismatched_id(client):
     assert 'user_id does not match' in response.json['error_message']
 
 
+def test_delete_user(client):
+    user = create_user(client).get_json()
+    user_id = user["id"]
+
+    response = client.delete(f'/user/{user_id}')
+    assert response.status_code == 200
+
+    deleted_user = response.get_json()
+    assert deleted_user == user
+
+    post_delete_response = client.get(f'/user/{user_id}')
+    assert post_delete_response.status_code == 404
+
+
+def test_delete_user_not_found(client):
+    response = client.delete(f'/user/{gen_user_id()}')
+    assert response.status_code == 404
+
+
 def create_user(client):
     return client.post('/user', data=user)
 
 
 def gen_user_id():
-    str(uuid.uuid4())
+    return str(uuid.uuid4())

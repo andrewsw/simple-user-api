@@ -55,3 +55,15 @@ def update_user(id):
     except user_db.UserIdMismatchException as e:
         logger.warn('update_user', error=e)
         abort(400, e)
+
+
+@blueprint.route('/<id>', methods=['DELETE'])
+def delete_user(id):
+    logger.debug('delete_user', user_id=id)
+
+    deleted_user = user_db.delete_user(id)
+
+    if deleted_user is None:
+        abort(404)
+
+    return make_response(deleted_user)

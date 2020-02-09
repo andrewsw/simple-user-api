@@ -74,5 +74,17 @@ def update_user(user_id, user_data):
     return user_data
 
 
+def delete_user(user_id):
+    """deletes the user record associated with the provided user_id
+
+    Arguments:
+    user_id: the v4 uuid string id of the user to delete
+
+    Returns:
+    the deleted user record, or None if not found
+    """
+    return db.pop(user_id, None)
+
+
 class UserIdMismatchException(Exception):
     pass

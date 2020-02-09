@@ -40,3 +40,8 @@ Configuration lives in [[./setup.cfg][setup.cfg]].
 
 - <2020-02-08 Sat 14:45> learning so much... Have coverage reporting
   in place and working to my satisfaction.
+
+- <2020-02-08 Sat 15:44> so much churn with structure and names...
+
+- <2020-02-08 Sat 16:40> TDD w/ python! Implementation of simple
+  persistence with in-memory dict, can create and read users

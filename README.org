@@ -28,6 +28,20 @@ Create a microservice with the following:
   - implemented validation requiring *all* 4 keys(5 for updates) and
     no extra keys
 
+* Setting up
+
+Assuming you've already cloned this repo, then you can prepare to run
+this app as follows:
+
+#+BEGIN_SRC
+virtualenv -p python3 venv
+source venv/bin/activate
+pip install -r requirements.txt
+#+END_SRC
+
+Once that process completes, you should be able to run tests or the
+app as below.
+
 * Running Users API
 
 Running the service is trivially easy as follows, assuming you're in
@@ -39,12 +53,33 @@ python -m users
 
 This runs in development mode, with automatic reloading, on port 5000.
 
+* Running tests
+
+Tests are done in vanilla pytest. To run them, simply do:
+
+#+BEGIN_SRC
+pytest
+#+END_SRC
+
+To run a specific test file
+
+#+BEGIN_SRC
+pytest tests/path/to/desired/test_file.py
+#+END_SRC
+
+or, to run a specific test
+
+#+BEGIN_SRC
+pytest tests/path/to/desired/test_file.py::test_method_to_run
+#+END_SRC
+
 * Coverage
 
 [[file:coverage.svg]]
 
 Coverage reporting is generated automatically with output to both the
-terminal and as an html report in [[./coverage_html/index.html][coverage_html/]]
+terminal and as an html report in ./coverage_html/index.html, after
+running the tests.
 
 Configuration lives in [[./setup.cfg][setup.cfg]].
 

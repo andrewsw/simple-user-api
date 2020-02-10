@@ -129,3 +129,46 @@ ln -s ../../bin/pre-commit-hook.sh .git/hooks/pre-commit
   cleanup, and proper teardown of the user database between tests,
   implementing listing of users becomes straightforward. I believe
   this is functionally complete for our requirements. On to validations.
+
+- <2020-02-09 Sun 17:42> Okay, I've put more than enough time into
+  this. Final thoughts:
+  - this is *not* production ready code with many shortcomings,
+    discussed below, and
+  - this was really fun. Flask and friends make it super easy to
+    quickly spin up a simple API like this, and I don't see anything
+    that suggests it's not suitable for taking all the way to
+    production,
+  - documentation of everything I used here is pretty strong, I was
+    able to come up to speed in no time at all, and finally
+  - I'm really pleased with how much I got done considering I have
+    basically no applicable Python experience. That is, my Python
+    experience is not super applicable -- setting up a Flask app, and
+    even a basic Python project is new to me.
+  - I'm sort of stunned by how I don't need an object hierarchy to
+    make useful services easily. Obviously, there are benefits to
+    spinning up classes to get shared behavior, but for this simple
+    case, it's just not necessary. Simple is always better, and here,
+    everything is simple.
+
+
+* Shortcomings
+
+A list of things that are wrong here, aren't up to production
+standards, or are just missing:
+
+- security. yeah, nothing done here at all.
+- field-level API validations. I'm only validating that the fields are
+  present, not that their contents are well-formed or applicable for
+  their intended use.
+- no handling of request headers at all. Of particular note here is
+  there are Content-Type problems. If the Content-Type header isn't
+  set properly, things fail. You can demonstrate this by POSTING with
+  curl.
+- a real database. obviously, I chose to just use an in-memory
+  dictionary, so there is no handling of duplicate records, no
+  persistence across runs of the app, etc.
+- site-specific configuration is not done at all. Ideally, I'd be able
+  to inject configuration at deployment time to enable to this to
+  behave appropriately depending on the deployed environment. But,
+  with project setup being a weakness, I didn't think it was worth my
+  time for this little project.

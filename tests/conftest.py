@@ -23,3 +23,13 @@ def app():
 @pytest.fixture
 def client(app):
     yield app.test_client()
+
+
+@pytest.fixture
+def api_user():
+    return {
+        'given_name': 'Bob',
+        'surname': 'Roberts',
+        'zip': '12345',
+        'email': 'bob@roberts.org'
+    }
